@@ -1,0 +1,7 @@
+setup.py
+fotireps.egg-info/PKG-INFO
+fotireps.egg-info/SOURCES.txt
+fotireps.egg-info/dependency_links.txt
+fotireps.egg-info/top_level.txt
+scripts/rename_di_outputs.py
+scripts/scripts_writer.py
