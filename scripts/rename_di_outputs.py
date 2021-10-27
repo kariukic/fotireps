@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Renaming DI outpout files before they get over written by the DD outfits files"""
 import os
 import sys

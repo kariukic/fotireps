@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Focusing on the Ionosphere, this is an RTS EoR Processing Suite"""
 import sys
 import os
