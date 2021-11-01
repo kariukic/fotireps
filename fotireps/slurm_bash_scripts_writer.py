@@ -209,10 +209,10 @@ class CookScripts:
             script.writelines(f"{self.virtual_env}\n")
             script.writelines("set -eux\n")
 
-            script.writelines("mkdir chips\n")
-            script.writelines("cd chips\n")
+            # script.writelines("mkdir chips\n")
+            # script.writelines("cd chips\n")
             # change this with a command to write the script.
-            script.writelines("mv run_clean_intermed.sh chips\n")
+            # script.writelines("mv run_clean_intermed.sh chips\n")
 
             write_run_clean_intermed(self.obsid, f"{tags[0]}_{tags[1]}")
             write_run_all_astro_script()
@@ -227,7 +227,7 @@ class CookScripts:
             )
             script.writelines(f"cd /astro/mwaeor/MWA/data/{self.obsid}/{tags[0]}\n")
             script.writelines(f"ln -sf {uvfits_path}/uvdump_*.uvfits .\n")
-            script.writelines(f"cd {working_dir}/chips\n")
+            script.writelines(f"cd {working_dir}\n")
             frequency_band = 0 if band == "low" else 1
             script.writelines(
                 f"sh make_obs_astro.sh chips_input_file.txt {tags[0]} {frequency_band} {tags[1]} 0 1 {field}\n"

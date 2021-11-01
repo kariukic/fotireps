@@ -41,18 +41,18 @@ def get_2dpower(FILETAG1, FILETAG2):
 
 
 if __name__ == "__main__":
-    FILETAG1_1, FILETAG1_2 = "##", "##"
-    FILETAG1_2, FILETAG2_2 = "##", "##"
+    FILETAG1_1, FILETAG1_2 = "C1_patch_1000_iono_1000_peel_1000", "multichips"
+    FILETAG2_1, FILETAG2_2 = "C2_patch_4000_iono_4000_peel_4000", "multichips"
 
     power2d_1, kper, kpa = get_2dpower(FILETAG1_1, FILETAG1_2)
-    power2d_2, kper, kpa = get_2dpower(FILETAG1_2, FILETAG2_2)
+    power2d_2, kper, kpa = get_2dpower(FILETAG2_1, FILETAG2_2)
 
     ratio2d = power2d_1 / power2d_2
 
     power_list2d = [power2d_1, power2d_2, ratio2d]
 
-    titles = ["case1", "case2", "Ratio (case1/case2)"]
-    fig, axlist = plt.subplots(1, 3, sharey=False, figsize=(18, 6))
+    titles = ["C1", "C2", "Ratio (C1/C2)"]
+    fig, axlist = plt.subplots(1, 3, sharey=False, figsize=(18, 6), dpi=150)
     for i, (ax, crosspower) in enumerate(zip(axlist, power_list2d)):
         x_vals = kper[2:Nkperp]
         y_vals = kpa[0 : Neta - 2]
@@ -81,8 +81,8 @@ if __name__ == "__main__":
             #     cmap=cmocean.cm.tarn,
             # )
         else:
-            mx = 1.0e13  # 1.0e14  # maximum power value to show in crosspower plot
-            mn = 1.0e8
+            mx = 1.0e14  # 1.0e14  # maximum power value to show in crosspower plot
+            mn = 1.0e7
             nm = colors.LogNorm(vmin=mn, vmax=mx)
             cp = ax.pcolor(X, Y, z, cmap=cmocean.cm.balance, norm=nm)
 
@@ -99,7 +99,8 @@ if __name__ == "__main__":
 
         ideal_cax = colorbar(cp)
         ideal_cax.ax.tick_params(axis="both", which="major", labelsize=15)
-        ideal_cax.ax.set_ylabel(r"P(k) mK$^2$ $h^{-3}$", size=16)
+        if i != 2:
+            ideal_cax.ax.set_ylabel(r"P(k) mK$^2$ $h^{-3}$", size=16)
         # cbar = plt.colorbar(
         #     cp, label=r"P(k) mK$^2$ $h^{-3}$ Mpc$^3$", format="%.0e", cax=ax
         # )
@@ -119,5 +120,7 @@ if __name__ == "__main__":
         ax.set(xlim=[0.008, 0.4])
         ax.set(ylim=[0.005, kpa[Neta - 2]])
     fig.tight_layout()
-    plt.savefig("power_2d.png")
+    plt.savefig(
+        "/astro/mwaeor/kchege/final_paper2_analysis/chips_results/C1_vs_C2_ratio_power_2d.png"
+    )
     plt.show()

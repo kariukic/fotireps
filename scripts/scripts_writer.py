@@ -10,7 +10,6 @@ from argparse import ArgumentParser
 
 from fotireps.slurm_bash_scripts_writer import CookScripts, write_tiles_to_flag_file
 
-
 __author__ = "Kariuki Chege"
 __version__ = "0.1"
 __date__ = "2021-10-21"
@@ -20,9 +19,9 @@ VIRTUAL_ENV = "source /astro/mwaeor/kchege/virtenvs/karis/bin/activate"
 
 
 def main():
-    """FotIREPS"""
+    """40REPS"""
     parser = ArgumentParser(
-        "FotIREPS",
+        "40REPS",
         description="an RTS EoR Processing Suite, with a Focus On The Ionosphere",
     )
 
@@ -276,15 +275,25 @@ def main():
 
     # Get into the specified output/working directory
     if args.output_directory and not os.path.exists(output_directory):
-        os.system(f"mkdir {output_directory}")
-    os.chdir(output_directory)
+        os.system(f"mkdir -p {output_directory}")
 
+    # make sure we actually have output_directory
+    try:
+        assert os.path.isdir(output_directory)
+        os.chdir(output_directory)
+    except Exception as error:
+        raise AssertionError(
+            f"{output_directory} could not be found or made for some unknown reason."
+        ) from error
+
+    # Initiate the bash scripts writer object
     scripts_writer = CookScripts(
         obsid=args.obsid,
         sourcelist=args.srclist,
         boxes_path=args.boxes_path,
         virtual_env=VIRTUAL_ENV,
     )
+
     # Remove jobs from this list as you implement them
     jobs_not_implemented_yet = ["download", "cotter", "offset_offsets"]
 
@@ -399,14 +408,14 @@ def main():
                 logging.error("Uvfits files needed for chips to work.")
                 sys.exit()
             else:
-                # make sure we actually have the supposed gpu boxes directory
+                # make sure we actually have the supposed uvfits directory
                 try:
                     assert os.path.isdir(args.uvfits_path)
                 except Exception as error:
                     raise AssertionError(
                         f"{args.uvfits_path} seems not to be a valid directory with the needed chips uvfits files."
                     ) from error
-            uvfits_path = args.uvfits_path
+            uvfits_path = os.path.abspath("args.uvfits_path")
         else:
             # if we are running the patch or peel in this same run, then we should have uvfits file in this directory
             uvfits_path = os.path.abspath(".")

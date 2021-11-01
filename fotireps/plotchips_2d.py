@@ -237,13 +237,17 @@ def plot_power(crosspower, kper, kpa, Nkperp, Neta, outputmode, outdir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("basedir")
     parser.add_argument("filestub")
-    parser.add_argument("N_kperp", type=int)
-    parser.add_argument("N_chan", type=int)
-    parser.add_argument("output", help="mode ('screen','png')")
-    parser.add_argument("outputdir")
-    parser.add_argument("wedge")
+    parser.add_argument(
+        "--basedir", default="/astro/mwaeor/MWA/output/", required=False
+    )
+    parser.add_argument("--N_kperp", type=int, default=80, required=False)
+    parser.add_argument("--N_chan", type=int, default=384, required=False)
+    parser.add_argument(
+        "--output", default="png", required=False, help="mode ('screen','png')"
+    )
+    parser.add_argument("--outputdir", default=".", required=False)
+    parser.add_argument("--wedge", default=0, required=False)
     args = parser.parse_args()
     outputmode = args.output
     outdir = args.outputdir
