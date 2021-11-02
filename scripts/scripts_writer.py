@@ -1,6 +1,6 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
-"""Focusing on the Ionosphere, this is an RTS EoR Processing Suite"""
+"""Friends of the Ionosphere, RTS EoR Processing Suite"""
 import sys
 import os
 
@@ -22,7 +22,8 @@ def main():
     """40REPS"""
     parser = ArgumentParser(
         "40REPS",
-        description="an RTS EoR Processing Suite, with a Focus On The Ionosphere",
+        description="""an RTS EoR Processing Suite, for Friends Of The Ionosphere, 
+        meant to save us from near 40 repetitions of trying to run all the steps."""
     )
 
     group1 = parser.add_argument_group("Configuration options")
@@ -107,18 +108,6 @@ def main():
     )
 
     group2 = parser.add_argument_group("RTS calibration options")
-    # group2.add_argument(
-    #     "--di",
-    #     required=False,
-    #     action="store_true",
-    #     help="Run the DI (patch calibration)",
-    # )
-    # group2.add_argument(
-    #     "--dd",
-    #     required=False,
-    #     action="store_true",
-    #     help="Run the DD (peel calibration)",
-    # )
 
     group2.add_argument(
         "--patch",
@@ -434,7 +423,7 @@ def main():
             field=args.eorfield,
         )
 
-    # Finally write a schduled bash script to run all the requested jobs in sequence and according to their interdependency
+    # Finally write a scheduled bash script to run all the requested jobs in sequence and according to their interdependency
 
     jobs = [
         job
@@ -453,7 +442,7 @@ def main():
     if args.fire:
         os.system("sbatch run_jobs.sh")
 
-    logging.info("All done. FotIREPS scripts writer signing out, Kwaheri(-:")
+    logging.info("All done. FOTIREPS scripts writer signing out, Kwaheri(-:")
 
 
 if __name__ == "__main__":
