@@ -1,5 +1,4 @@
 """This script writes bash scripts to run job on hpc slurm"""
-import sys
 import os
 from fotireps.chips_runners import *
 
@@ -96,6 +95,7 @@ class CookScripts:
         CorrDumpTime=2,  # tHIS IS THE time resolution of the input data, IN THIS CASE THE GPU BOX FILES
         cutoff=None,
         subbands=None,  # 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+        patch_time_config=None,
     ):
         rts_setup_script = self.new_sh_script("rts_setup")
         with open(rts_setup_script, mode="a") as script:
@@ -107,6 +107,7 @@ class CookScripts:
             script.writelines("set -eux\n")
 
             if self.run_patch:
+
                 # The number of sources to make the patch(DI) sky model
                 num_patch = DI_calibrators_numbers
 
@@ -114,9 +115,26 @@ class CookScripts:
                     f"srclist_by_beam.py -n {num_patch} --srclist {self.sourcelist} --metafits {self.metafits} --cutoff={cutoff} \n"
                 )
 
-                script.writelines(
-                    f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits -o rts_patch.in \n"
-                )
+                if patch_time_config:
+                    (
+                        integration_time,
+                        CorrDumpTime,
+                    ) = patch_time_config  # eg 32 s integeration time, 2 seconds from the gpu boxes
+                    corrDumpsPerCadence = (
+                        integration_time // CorrDumpTime
+                    )  # eg 32s integeration time/2 seconds from the gpu boxes
+                    numberOfIterations = (
+                        64 // integration_time
+                    )  # eg.  64/32s integration time = 2
+
+                    script.writelines(
+                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits -o rts_patch.in \n"
+                    )
+
+                else:
+                    script.writelines(
+                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits -o rts_patch.in \n"
+                    )
 
             if self.run_peel:
                 # This part seems necessary for the moongoose to edit the peel infile to tell the rts correctly the integration time we want.

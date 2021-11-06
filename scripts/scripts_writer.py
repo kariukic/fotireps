@@ -23,9 +23,8 @@ def main():
     parser = ArgumentParser(
         "40REPS",
         description="""an RTS EoR Processing Suite, for Friends Of The Ionosphere, 
-        meant to save us from near 40 repetitions of trying to run all the steps."""
+        meant to save us from near 40 repetitions of trying to run all the steps.""",
     )
-
     group1 = parser.add_argument_group("Configuration options")
     group1.add_argument(
         "--obsid",
@@ -114,6 +113,15 @@ def main():
         default=0,  # 1000
         type=int,
         help="Run DI with this number of sky model sources (patch)",
+    )
+    group2.add_argument(
+        "--patch_time_config",
+        type=int,
+        nargs=2,
+        default=None,  # (1000, 1000),
+        help="""Change the default time calibration parameters for the patch only. The needed params are (integration_time, CorrDumpTime). If you just want to run defaults ignore this.
+        The order is important.
+        """,
     )
 
     group2.add_argument(
@@ -355,6 +363,7 @@ def main():
                 CorrDumpTime=args.corrdumptime,
                 cutoff=args.fov_cutoff,
                 subbands=args.subbands,
+                patch_time_config=args.patch_time_config,
             )
             # If needed, write the 'flagged_tiles.txt' file needed by the rts to flag
             if args.flag_tiles:
