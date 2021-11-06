@@ -248,7 +248,7 @@ class CookScripts:
             script.writelines(f"cd /astro/mwaeor/MWA/data/{self.obsid}/{tags[0]}\n")
             if uvfits_prefix:
                 script.writelines(
-                    f"ln -sf {uvfits_path}/{uvfits_prefix}uvdump_*.uvfits .\n"
+                    f"ln -sf {uvfits_path}/{uvfits_prefix}_uvdump_*.uvfits .\n"
                 )
             else:
                 script.writelines(f"ln -sf {uvfits_path}/uvdump_*.uvfits .\n")
