@@ -220,7 +220,9 @@ class CookScripts:
         # script.writelines("mkdir srclists_used\n")
         # script.writelines("mv *patch*.txt *peel*.txt srclists_used\n")
 
-    def chips(self, uvfits_path=None, tags=None, band=None, field=None):
+    def chips(
+        self, uvfits_path=None, tags=None, band=None, field=None, uvfits_prefix=None
+    ):
         chips_script = self.new_sh_script("chips")
         working_dir = os.path.abspath(".")
         with open(chips_script, mode="a") as script:
@@ -244,7 +246,12 @@ class CookScripts:
                 f"mkdir -p /astro/mwaeor/MWA/data/{self.obsid}/{tags[0]}\n"
             )
             script.writelines(f"cd /astro/mwaeor/MWA/data/{self.obsid}/{tags[0]}\n")
-            script.writelines(f"ln -sf {uvfits_path}/uvdump_*.uvfits .\n")
+            if uvfits_prefix:
+                script.writelines(
+                    f"ln -sf {uvfits_path}/{uvfits_prefix}uvdump_*.uvfits .\n"
+                )
+            else:
+                script.writelines(f"ln -sf {uvfits_path}/uvdump_*.uvfits .\n")
             script.writelines(f"cd {working_dir}\n")
             frequency_band = 0 if band == "low" else 1
             script.writelines(

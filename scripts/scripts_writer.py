@@ -118,8 +118,8 @@ def main():
         "--patch_time_config",
         type=int,
         nargs=2,
-        default=None,  # (1000, 1000),
-        help="""Change the default time calibration parameters for the patch only. The needed params are (integration_time, CorrDumpTime). If you just want to run defaults ignore this.
+        default=None,  # (32, 2),
+        help="""Change the default time calibration parameters for the patch only. The needed params are (integration_time, CorrDumpTime) e.g 32 2. If you just want to run defaults ignore this.
         The order is important.
         """,
     )
@@ -418,10 +418,13 @@ def main():
             # if we are running the patch or peel in this same run, then we should have uvfits file in this directory
             uvfits_path = os.path.abspath(".")
 
+        # here we just want to add a prefix to the expected uvfits file becaues patch uvfits are renamed by default.
+        uvfits_prefix = f"{args.obsid}_patch" if args.patch and not args.peel else None
+
         # make sure chips tags are provided
         if not args.chipstags:
             logging.error(
-                "For chips, it's crucial that you provide 2 unique tags to label the output chips power spectrum files. eg., '--chipstag unique_tag1 unique_tag2'"
+                "For chips, it's crucial that you provide 2 unique tags to label the output chips power spectrum files. eg., '--chipstags unique_tag1 unique_tag2'"
             )
             sys.exit()
 
@@ -430,6 +433,7 @@ def main():
             tags=args.chipstags,
             band=args.band,
             field=args.eorfield,
+            uvfits_prefix=uvfits_prefix,
         )
 
     # Finally write a scheduled bash script to run all the requested jobs in sequence and according to their interdependency
