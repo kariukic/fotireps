@@ -892,11 +892,6 @@ if __name__ == "__main__":
     output_directory = (
         args.output_directory if args.output_directory else os.path.abspath(".")
     )
-    # set some paths straight
-    if args.di_gains_path:
-        di_gains_path = os.path.abspath(args.di_gains_path)
-    if args.dd_logs_path:
-        dd_logs_path = os.path.abspath(args.dd_logs_path)
 
     # Get into the specified output/working directory
     if args.output_directory and not os.path.exists(output_directory):
