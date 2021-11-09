@@ -368,6 +368,7 @@ def run_shifting_bash_script(
     srclist,
     metafits,
     shifts_json_filename,
+    exclude_missing_sources,
 ):
     """Run a source shifting bash script `run_shift_command.sh`
 
@@ -390,7 +391,8 @@ def run_shifting_bash_script(
     shcomm = f"sh ./run_shift_command.sh {srclist} {peelsrclist} {patchsrclist} {shifts_json_filename} {metafits} >> shifting_srclists.out"
     os.system(shcomm)
     time.sleep(60)
-    add_missing_sources(srclist, peelsrclist)
+    if not exclude_missing_sources:
+        add_missing_sources(srclist, peelsrclist)
 
     return
 
@@ -400,6 +402,7 @@ def shift_sources_without_interpolation(
     yamlfile=None,
     metafits=None,
     srclist=None,
+    exclude_missing_sources=None,
 ):
     """Shifts sources with offsets directly from the yaml file. Only outlier offsets are changed to zeros
 
@@ -465,7 +468,10 @@ def shift_sources_without_interpolation(
     if srclist:
         if metafits:
             run_shifting_bash_script(
-                srclist, metafits, f"{obsid}_offsets_no_interp.json"
+                srclist,
+                metafits,
+                f"{obsid}_offsets_no_interp.json",
+                exclude_missing_sources=exclude_missing_sources,
             )
 
     return
@@ -548,6 +554,7 @@ def interp_and_shift_sources(
     pointing_center=None,
     shift_sourcelist=False,
     write_db=False,
+    exclude_missing_sources=None,
 ):
     """Interpolate offsets and output results.
 
@@ -750,7 +757,9 @@ def interp_and_shift_sources(
         )
 
         log.info("Shifting rts sourcelist ...")
-        run_shifting_bash_script(srclist, metafits, f"{name}.json")
+        run_shifting_bash_script(
+            srclist, metafits, f"{name}.json", exclude_missing_sources
+        )
     log.info("Kwaheri :-)")
     return
 
@@ -845,6 +854,12 @@ if __name__ == "__main__":
         help="Output shifted RTS peel and patch sourcelists",
     )
     group1.add_argument(
+        "--exclude_missing_sources",
+        dest="exclude_missing_sources",
+        action="store_true",
+        help="The provided sourcelist is ready and does not need srclist_by_beam to be run on it. [default: false]",
+    )
+    group1.add_argument(
         "--pointing_center",
         default=(0.0, -27.0),
         required=False,
@@ -900,6 +915,7 @@ if __name__ == "__main__":
             plot=args.plot,
             shift_sourcelist=args.shift_sourcelist,
             write_db=args.write_db,
+            exclude_missing_sources=args.exclude_missing_sources,
         )
 
     else:
@@ -909,4 +925,5 @@ if __name__ == "__main__":
             yamlfile=args.yamlfile,
             metafits=args.metafits,
             srclist=args.srclist,
+            exclude_missing_sources=args.exclude_missing_sources,
         )
