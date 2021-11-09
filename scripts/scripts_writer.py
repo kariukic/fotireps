@@ -109,6 +109,13 @@ def main():
     group2 = parser.add_argument_group("RTS calibration options")
 
     group2.add_argument(
+        "--no_srclist_by_beam",
+        dest="no_srclist_by_beam",
+        action="store_true",
+        help="The provided sourcelist is ready and does not need srclist_by_beam to be run on it. [default: false]",
+    )
+
+    group2.add_argument(
         "--patch",
         default=0,  # 1000
         type=int,
@@ -364,6 +371,7 @@ def main():
                 cutoff=args.fov_cutoff,
                 subbands=args.subbands,
                 patch_time_config=args.patch_time_config,
+                no_srclist_by_beam=args.no_srclist_by_beam,
             )
             # If needed, write the 'flagged_tiles.txt' file needed by the rts to flag
             if args.flag_tiles:

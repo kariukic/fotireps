@@ -18,6 +18,7 @@ from fotireps.misc_utils import (
     rmse,
     thermal_noise,
 )
+from fotireps.slurm_bash_scripts_writer import write_run_shift_command
 from fotireps.plotting import plot_cthulhu_tec, plot_predictions
 from scipy import spatial, stats
 from scipy.interpolate import CloughTocher2DInterpolator, RBFInterpolator, griddata
@@ -379,9 +380,13 @@ def run_shifting_bash_script(
     shifts_json_filename : [type]
         [description]
     """
-    peelsrclist = srclist.split("/")[-1].replace("peel", "peel_shifted")
-    patchsrclist = srclist.split("/")[-1].replace("peel", "patch_shifted")
-
+    peelsrclist = srclist.split("/")[-1].replace(
+        "peel", "shifted_peel"
+    )  # output name of the shifted peel sourcelist
+    patchsrclist = srclist.split("/")[-1].replace(
+        "peel", "shifted_patch"
+    )  # output name of the shifted patch sourcelist
+    write_run_shift_command()
     shcomm = f"sh ./run_shift_command.sh {srclist} {peelsrclist} {patchsrclist} {shifts_json_filename} {metafits} >> shifting_srclists.out"
     os.system(shcomm)
     time.sleep(60)
