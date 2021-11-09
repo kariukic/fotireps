@@ -18,5 +18,6 @@ setup(
     scripts=[
         "scripts/scripts_writer.py",
         "scripts/rename_di_outputs.py",
+        "scripts/offsets_interp.py",
     ],
 )

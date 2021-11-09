@@ -297,7 +297,7 @@ class CookScripts:
             jobs_runner.write(
                 f"""\
 #! /bin/bash
-{jsub}="sbatch --nice=20 {job}.sh"
+{jsub}="sbatch --nice=2 {job}.sh"
 {jid}=($(${{{jsub}}}))
 {jid}=${{{jid2}}} \n
         """
@@ -313,7 +313,7 @@ class CookScripts:
                 jobs_runner.write(
                     f"""\
 
-{this_job_sub}="sbatch --nice=20 --dependency=afterok:${{{previous_job_id}}} {job}.sh"
+{this_job_sub}="sbatch --nice=2 --dependency=afterok:${{{previous_job_id}}} {job}.sh"
 {this_job_id}=($(${{{this_job_sub}}}))
 {this_job_id}=${{{this_job_id2}}}\n
                     """
