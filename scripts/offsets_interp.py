@@ -795,6 +795,12 @@ if __name__ == "__main__":
         help="This yamlfile should just provides the ra and decs for the n3/n4 source offsets to be predicted",
     )
     group1.add_argument(
+        "--output_directory",
+        required=False,
+        help="directory to save stuff in",
+    )
+
+    group1.add_argument(
         "--resolution",
         "-r",
         required=False,
@@ -882,6 +888,28 @@ if __name__ == "__main__":
             raise AssertionError(
                 f"{args.srclist} seems not to be a valid sourcelist path."
             ) from error
+
+    output_directory = (
+        args.output_directory if args.output_directory else os.path.abspath(".")
+    )
+    # set some paths straight
+    if args.di_gains_path:
+        di_gains_path = os.path.abspath(args.di_gains_path)
+    if args.dd_logs_path:
+        dd_logs_path = os.path.abspath(args.dd_logs_path)
+
+    # Get into the specified output/working directory
+    if args.output_directory and not os.path.exists(output_directory):
+        os.system(f"mkdir -p {output_directory}")
+
+    # make sure we actually have output_directory
+    try:
+        assert os.path.isdir(output_directory)
+        os.chdir(output_directory)
+    except Exception as error:
+        raise AssertionError(
+            f"{output_directory} could not be found or made for some unknown reason."
+        ) from error
 
     if args.interp:
         assert args.method is not None
