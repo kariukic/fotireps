@@ -20,7 +20,7 @@ from fotireps.misc_utils import (
 )
 from fotireps.slurm_bash_scripts_writer import write_run_shift_command
 from fotireps.plotting import plot_cthulhu_tec, plot_predictions
-from scipy import spatial, stats
+from scipy import spatial
 from scipy.interpolate import CloughTocher2DInterpolator, RBFInterpolator, griddata
 from yaml import SafeLoader as SafeLoader
 

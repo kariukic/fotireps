@@ -348,6 +348,7 @@ def main():
 
             if args.patch:
                 scripts_writer.run_patch = True
+                DD_calibrators_numbers = args.peel
             if args.peel:
                 scripts_writer.run_peel = True
                 if not args.patch:
@@ -363,9 +364,30 @@ def main():
                     # TODO check if we can do it without copying to save the space
                     os.system(f"cp {di_gains_path}/*.dat {os.path.abspath('.')}")
 
+                if args.no_srclist_by_beam:
+                    with open(args.srclist) as sourcelist:
+                        all_lines = sourcelist.readlines()
+                        total_sources = len(
+                            [l for l in all_lines if l.startswith("ENDSOURCE")]
+                        )
+                    if total_sources < np.max(DD_calibrators_numbers):
+                        log.info(
+                            "The sourcelist has less source (%s) than one of the provided peel params sources (%s). Setting %s as the new peel number.",
+                            total_sources,
+                            *args.peel,
+                            total_sources,
+                        )
+
+                        DD_calibrators_numbers = list(
+                            map(
+                                lambda x: total_sources if x > total_sources else x,
+                                DD_calibrators_numbers,
+                            )
+                        )
+
             scripts_writer.rts_setup(
                 DI_calibrators_numbers=args.patch,
-                DD_calibrators_numbers=args.peel,
+                DD_calibrators_numbers=DD_calibrators_numbers,
                 integration_time=args.integration_time,
                 CorrDumpTime=args.corrdumptime,
                 cutoff=args.fov_cutoff,

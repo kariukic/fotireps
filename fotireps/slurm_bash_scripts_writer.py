@@ -172,6 +172,7 @@ class CookScripts:
                 num_full_dd_cals, num_iono, num_peel = DD_calibrators_numbers
 
                 src_npeel = num_peel + 1000
+
                 if not no_srclist_by_beam:
                     # Add 100 sources to numpeel just to make sure the rts veto passes
                     # src_npeel += 1000
