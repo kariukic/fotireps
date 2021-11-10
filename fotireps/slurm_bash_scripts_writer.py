@@ -172,7 +172,6 @@ class CookScripts:
                 num_full_dd_cals, num_iono, num_peel = DD_calibrators_numbers
 
                 src_npeel = num_peel + 1000
-
                 if not no_srclist_by_beam:
                     # Add 100 sources to numpeel just to make sure the rts veto passes
                     # src_npeel += 1000
@@ -182,8 +181,8 @@ class CookScripts:
                     )
                 # --num-prepeel {num_prepeel} is not needed because the prepeel will always happen determined by the max in the other DD params (either num-peel or niono)
                 script.writelines(
-                    f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_peel{src_npeel}.txt --subband-ids {' '.join(str(id) for id in subbands)} -o rts_peel.in\n"
-                )
+                    f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)} -o rts_peel.in\n"
+                )  # TODO fix the * after srclist
         add_permissions(rts_setup_script)
 
     def rts_run(self):

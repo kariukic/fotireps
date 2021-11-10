@@ -278,6 +278,12 @@ def main():
         dd_logs_path = os.path.abspath(args.dd_logs_path)
 
     if args.srclist:
+        try:
+            assert os.path.isfile(args.srclist)
+        except Exception as error:
+            raise AssertionError(
+                f"{args.srclist} cannot be accessed. Check whether the path is valid."
+            ) from error
         srclist = os.path.abspath(args.srclist)
 
     # Get into the specified output/working directory
