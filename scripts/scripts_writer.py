@@ -277,6 +277,9 @@ def main():
     if args.dd_logs_path:
         dd_logs_path = os.path.abspath(args.dd_logs_path)
 
+    if args.srclist:
+        srclist = os.path.abspath(args.srclist)
+
     # Get into the specified output/working directory
     if args.output_directory and not os.path.exists(output_directory):
         os.system(f"mkdir -p {output_directory}")
@@ -293,7 +296,7 @@ def main():
     # Initiate the bash scripts writer object
     scripts_writer = CookScripts(
         obsid=args.obsid,
-        sourcelist=args.srclist,
+        sourcelist=srclist,
         boxes_path=args.boxes_path,
         virtual_env=VIRTUAL_ENV,
     )
@@ -365,7 +368,7 @@ def main():
                     os.system(f"cp {di_gains_path}/*.dat {os.path.abspath('.')}")
 
                 if args.no_srclist_by_beam:
-                    with open(args.srclist) as sourcelist:
+                    with open(srclist) as sourcelist:
                         all_lines = sourcelist.readlines()
                         total_sources = len(
                             [l for l in all_lines if l.startswith("ENDSOURCE")]
