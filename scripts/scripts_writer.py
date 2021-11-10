@@ -372,7 +372,7 @@ def main():
                         )
                     if total_sources < np.max(DD_calibrators_numbers):
                         log.info(
-                            "The sourcelist has less source (%s) than one of the provided peel params sources (%s). Setting %s as the new peel number.",
+                            "The sourcelist has less sources (%s) than at least one of the provided peel params sources %s. Setting %s as the new max peel param.",
                             total_sources,
                             DD_calibrators_numbers,
                             total_sources,
