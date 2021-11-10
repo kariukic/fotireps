@@ -374,7 +374,7 @@ def main():
                         log.info(
                             "The sourcelist has less source (%s) than one of the provided peel params sources (%s). Setting %s as the new peel number.",
                             total_sources,
-                            *args.peel,
+                            DD_calibrators_numbers,
                             total_sources,
                         )
 
