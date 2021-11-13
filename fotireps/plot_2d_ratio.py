@@ -27,10 +27,10 @@ def colorbar(mappable):
     return cbar
 
 
-def get_2dpower(FILETAG1, FILETAG2):
+def get_2dpower(FILETAG1, FILETAG2, pol="yy"):
     args = Namespace(
         basedir="/astro/mwaeor/MWA/output/",
-        filestub=f"yy_0.iter.{FILETAG1}_{FILETAG2}",
+        filestub=f"{pol}_0.iter.{FILETAG1}_{FILETAG2}",
         N_kperp=int(80),
         N_chan=int(384),
         wedge=0,
@@ -41,17 +41,57 @@ def get_2dpower(FILETAG1, FILETAG2):
 
 
 if __name__ == "__main__":
-    FILETAG1_1, FILETAG1_2 = "C1_patch_1000_iono_1000_peel_1000", "multichips"
-    FILETAG2_1, FILETAG2_2 = "C2_patch_4000_iono_4000_peel_4000", "multichips"
+    import itertools
 
-    power2d_1, kper, kpa = get_2dpower(FILETAG1_1, FILETAG1_2)
-    power2d_2, kper, kpa = get_2dpower(FILETAG2_1, FILETAG2_2)
+    # ffff = [
+    #     "B1_patch_1000_1iono_peel_1000",
+    #     "C1_patch_1000_iono_1000_peel_1000",
+    #     "D1_SF_patch_1000_iono_1000_peel_1000",
+    #     "B2_patch_4000_1iono_peel_4000",
+    #     "C2_patch_4000_iono_4000_peel_4000",
+    #     "C3_patch_4000_iono_2sigma_peel_4000",
+    # ]
+
+    # for t, typ in enumerate([1, 2, 3, 4]):
+    #     iono_filetags = [
+    #         (f"{itag[0][:2]}_revised_type{typ}", "multichips") for itag in ffff
+    #     ]
+    #     # labels = [itag[0][:2] for itag in iono_filetags]
+
+    #     iono_filetags = list(itertools.combinations(ffff, 2))
+
+    #     for couple in iono_filetags:
+
+    # typ = 3
+    # for typ in [1, 2, 4]:
+    #     itag = "D1_SF_patch_1000_iono_1000_peel_1000"
+    #     couple = [f"D1_revised_type{typ}", f"D1_revised_type{typ}"]
+
+    # couple = [f"D1_revised_type{typ}", f"D1_revised_type{typ}"]
+
+    couple = [
+        "D1_SF_patch_1000_iono_1000_peel_1000",
+        "D1_SF_patch_1000_iono_1000_peel_1000",
+    ]
+
+    FILETAG1_1, FILETAG1_2 = couple[0], "multichips"
+    FILETAG2_1, FILETAG2_2 = couple[1], "multichips"
+
+    label1 = f"{couple[0][:2]}_xx"
+    label2 = f"{couple[1][:2]}_yy"
+
+    power2d_1, kper, kpa = get_2dpower(FILETAG1_1, FILETAG1_2, pol="xx")
+    power2d_2, kper, kpa = get_2dpower(FILETAG2_1, FILETAG2_2, pol="yy")
 
     ratio2d = power2d_1 / power2d_2
 
     power_list2d = [power2d_1, power2d_2, ratio2d]
 
-    titles = ["C1", "C2", "Ratio (C1/C2)"]
+    titles = [
+        label1,
+        label2,
+        f"Ratio ({label1}/{label2})",
+    ]
     fig, axlist = plt.subplots(1, 3, sharey=False, figsize=(18, 6), dpi=150)
     for i, (ax, crosspower) in enumerate(zip(axlist, power_list2d)):
         x_vals = kper[2:Nkperp]
@@ -121,6 +161,7 @@ if __name__ == "__main__":
         ax.set(ylim=[0.005, kpa[Neta - 2]])
     fig.tight_layout()
     plt.savefig(
-        "/astro/mwaeor/kchege/final_paper2_analysis/chips_results/C1_vs_C2_ratio_power_2d.png"
+        f"/astro/mwaeor/kchege/final_paper2_analysis/chips_results/{label1}_vs_{label2}__alldata_ratio_power_2d.pdf",
+        bbox_inches="tight",
     )
     plt.show()

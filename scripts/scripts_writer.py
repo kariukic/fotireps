@@ -393,6 +393,8 @@ def main():
                                 DD_calibrators_numbers,
                             )
                         )
+                else:
+                    DD_calibrators_numbers = args.peel
 
             scripts_writer.rts_setup(
                 DI_calibrators_numbers=args.patch,
