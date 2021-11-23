@@ -133,7 +133,8 @@ def get_2sigma_sources(obsid, df):
 
 
 def get_sky_temp(obsid):
-    csvpath = "/home/kariuki/gara_pipe/sampled_5obsids_per_iono_type.csv"
+    # csvpath = "/home/kariuki/gara_pipe/sampled_5obsids_per_iono_type.csv"
+    csvpath = "/astro/mwaeor/kchege/pipeline2/dataset_selection/csvs/final_lst0_clean_lowband_info_db.csv"
     df = pd.read_csv(csvpath, usecols=["obsid", "sky_temp"])
     temp = df[df["obsid"] == int(obsid)]["sky_temp"].values[0]
 
