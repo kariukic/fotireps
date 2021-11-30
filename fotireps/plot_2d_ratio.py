@@ -109,6 +109,34 @@ def plot_xx_yy_ratio(filetag1, filetag2="multichips", prefix="alldata"):
         kper,
         kpa,
         titles,
+        plotname=f"{plotdir}/{label1}_vs_{label2}_{prefix}_xxyyratio_power_2d.pdf",
+    )
+
+    return
+
+
+def plot_xx_yy_ratio_2(
+    filetag1, filetag11, filetag2="multichips", prefix="alldata", pola="xx"
+):
+    power2d_1, kper, kpa = get_2dpower(filetag1, filetag2, pol=pola)
+    power2d_2, kper, kpa = get_2dpower(filetag11, filetag2, pol=pola)
+
+    ratio2d = power2d_1 / power2d_2
+
+    power_list2d = [power2d_1, power2d_2, ratio2d]
+
+    label1 = f"{filetag1[:2]}_{pola}"
+    label2 = f"{filetag11[:2]}_{pola}"
+    titles = [
+        label1,
+        label2,
+        f"Ratio ({label1}/{label2})",
+    ]
+    plot_ratio(
+        power_list2d,
+        kper,
+        kpa,
+        titles,
         plotname=f"{plotdir}/{label1}_vs_{label2}_{prefix}_ratio_power_2d.pdf",
     )
 
@@ -118,27 +146,36 @@ def plot_xx_yy_ratio(filetag1, filetag2="multichips", prefix="alldata"):
 if __name__ == "__main__":
     import itertools
 
-    plotdir = "/astro/mwaeor/kchege/final_paper2_analysis/final_paper_plots"
-    polas = ["yy", "xx"]
+    plotdir = "/astro/mwaeor/kchege/final_paper2_analysis/chips_results_best_data"
+    polas = ["xx", "yy"]
 
-    ffff = [
+    ftags = [
         # "A1_patch_1000_1iono_1peel",
         # "A2_patch_4000_1iono_1peel",
-        "B1_patch_1000_1iono_peel_1000",
-        "C1_patch_1000_iono_1000_peel_1000",
+        # "B1_patch_1000_1iono_peel_1000",
+        # "C1_patch_1000_iono_1000_peel_1000",
         # "D1_SF_patch_1000_iono_1000_peel_1000",
-        "B2_patch_4000_1iono_peel_4000",
-        "C2_patch_4000_iono_4000_peel_4000",
+        # "B2_patch_4000_1iono_peel_4000",
+        # "C2_patch_4000_iono_4000_peel_4000",
         # "D2_SF_patch_4000_iono_4000_peel_4000",
-        "B3_patch_4000_1iono_2sigma_peel",
+        # "B3_patch_4000_1iono_2sigma_peel",
         "C3_patch_4000_iono_2sigma_peel_4000",
-        # "D3_SF_patch_4000_iono_2sigma_peel_4000",
+        "D3_SF_patch_4000_iono_2sigma_peel_4000",
+        "E3_ISF_patch_4000_iono_4000_peel_4000",
     ]
-    for ftag in ffff:
-        plot_xx_yy_ratio(ftag)
+    for ftag in ftags:
         for t, typ in enumerate([1, 2, 3, 4]):
-            iono_ftag = f"{ftag[:2]}_revised_type{typ}"
-            plot_xx_yy_ratio(iono_ftag, prefix=f"itype{typ}")
+            iono_ftag1 = f"{ftag[:2]}_cleanest_type{typ}"
+            plot_xx_yy_ratio(iono_ftag1, prefix=f"cleanest_itype{typ}")
+    raise
+    for pola in polas:
+        plot_xx_yy_ratio_2(ftags[0], ftags[1], pola=pola)
+        for t, typ in enumerate([1, 2, 3, 4]):
+            iono_ftag1 = f"{ftags[0][:2]}_cleanest_type{typ}"
+            iono_ftag11 = f"{ftags[1][:2]}_cleanest_type{typ}"
+            # plot_xx_yy_ratio_2(
+            #     iono_ftag1, iono_ftag11, prefix=f"cleanest_itype{typ}", pola=pola
+            # )
 
     import sys
 

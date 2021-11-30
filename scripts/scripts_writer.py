@@ -454,7 +454,7 @@ def main():
                     raise AssertionError(
                         f"{args.uvfits_path} seems not to be a valid directory with the needed chips uvfits files."
                     ) from error
-            uvfits_path = os.path.abspath("args.uvfits_path")
+            uvfits_path = os.path.abspath(args.uvfits_path)
         else:
             # if we are running the patch or peel in this same run, then we should have uvfits file in this directory
             uvfits_path = os.path.abspath(".")

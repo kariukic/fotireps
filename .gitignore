@@ -4,3 +4,4 @@ __pycache__
 .vscode/settings.json
 *build
 *.egg*
+*workspace.code-workspace
