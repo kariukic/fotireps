@@ -108,7 +108,7 @@ class CookScripts:
             script.writelines("#SBATCH --account=mwaeor\n")
             script.writelines("#SBATCH --export=NONE\n")
             script.writelines("#SBATCH --mail-type=FAIL \n")
-            script.writelines("#SBATCH --mail-user=jameskariuki31@gmail.com\n")
+            # script.writelines("#SBATCH --mail-user=----\n")
         return script_name
 
     def rts_setup(
