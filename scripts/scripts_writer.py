@@ -363,8 +363,8 @@ def main():
 
             if args.patch:
                 scripts_writer.run_patch = True
-                DD_calibrators_numbers = args.peel
             if args.peel:
+                DD_calibrators_numbers = args.peel
                 scripts_writer.run_peel = True
                 if not args.patch:
                     # ask for the directory with patch outputs to use
