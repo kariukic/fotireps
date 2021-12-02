@@ -77,6 +77,7 @@ class CookScripts:
         metafits=None,
         boxes_path="",
         virtual_env="",
+        mail=None,
     ):
         self.obsid = obsid
         self.run_patch = run_patch
@@ -85,6 +86,7 @@ class CookScripts:
         self.metafits = metafits
         self.boxes_path = boxes_path
         self.virtual_env = virtual_env
+        self.mail = mail
 
     def new_sh_script(self, job):
         """[summary]
@@ -107,8 +109,9 @@ class CookScripts:
             script.writelines("#SBATCH --clusters=garrawarla\n")
             script.writelines("#SBATCH --account=mwaeor\n")
             script.writelines("#SBATCH --export=NONE\n")
-            script.writelines("#SBATCH --mail-type=FAIL \n")
-            # script.writelines("#SBATCH --mail-user=----\n")
+            if self.mail:
+                script.writelines("#SBATCH --mail-type=FAIL \n")
+                script.writelines("#SBATCH --mail-user={self.mail}\n")
         return script_name
 
     def rts_setup(

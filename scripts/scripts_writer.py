@@ -250,8 +250,8 @@ def main():
     group5.add_argument(
         "--email",
         required=False,
-        action="store_true",
-        help="Notify you via email if your jobs fail",
+        default=None,
+        help="Get notified via email if your job(s) fail",
     )
 
     args = parser.parse_args()
@@ -305,6 +305,7 @@ def main():
         sourcelist=srclist,
         boxes_path=args.boxes_path,
         virtual_env=VIRTUAL_ENV,
+        mail=args.email,
     )
 
     # Remove jobs from this list as you implement them
