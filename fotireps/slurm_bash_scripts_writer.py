@@ -2,13 +2,6 @@
 import os
 from fotireps.chips_runners import *
 
-# TODO: add chips with all its params, Tidy up, run 1A
-
-# TODO Do this directorizing before jobs run
-# TODO finish job runner
-# TODO initial commit
-# TODO Calculate the required cutoff properly
-
 
 def add_permissions(bash_script):
     """Ensure permissions are sensible!

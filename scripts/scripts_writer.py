@@ -329,13 +329,18 @@ def main():
         rtsJobs = [args.patch, args.peel]
         if any(rtsJobs):  # if there is at least one rts jobs, proceed to preocess it.
             rts_jobs_available = True
+            # RTS needs GPU box files to run on
+            if not args.boxes_path:
+                logging.error("No MWA GPU boxes path provided. It is needed.")
+                sys.exit()
             # make sure we actually have the supposed gpu boxes directory
-            try:
-                assert os.path.isdir(args.boxes_path)
-            except Exception as error:
-                raise AssertionError(
-                    f"{args.boxes_path} is not a valid directory. Exiting!"
-                ) from error
+            else:
+                try:
+                    assert os.path.isdir(args.boxes_path)
+                except Exception as error:
+                    raise AssertionError(
+                        f"{args.boxes_path} is not a valid directory. Exiting!"
+                    ) from error
             # Next check if we have a metafits file, try looking for it in some possible locations. if not found we can't run the rts.
             if not args.metafits:
                 metafitsfile = f"{args.obsid}.metafits"

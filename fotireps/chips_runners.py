@@ -155,8 +155,8 @@ def write_run_clean_intermed(obsid, identifier):
 set -eux
 
 cd /astro/mwaeor/MWA/output
-find . -maxdepth 1 -name "*freq*{identifier}*" -user kchege -print0 | xargs -0 rm -r
-find . -maxdepth 1 -name '*syslog*{identifier}*' -user kchege -print0 | xargs -0 rm -r
+find . -maxdepth 1 -name "*freq*{identifier}*" -user $USER -print0 | xargs -0 rm -r
+find . -maxdepth 1 -name '*syslog*{identifier}*' -user $USER -print0 | xargs -0 rm -r
 
 echo 'cleaning finished successfully.'
 
