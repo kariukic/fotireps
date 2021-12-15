@@ -748,7 +748,10 @@ def interp_and_shift_sources(
 
     if write_db:
         log.info("Writing outputs to sqlite database...")
-        save_to_db(df1, ra_ygrid, dec_ygrid, boundaries, f"{name}.sqlite")
+        try:
+            save_to_db(df1, ra_ygrid, dec_ygrid, boundaries, f"{name}.sqlite")
+        except:
+            print("something bad happened couldn't save interpolation info to database")
 
     if shift_sourcelist:
         log.info("Writing json file for rts sourcelist shifting ...")
