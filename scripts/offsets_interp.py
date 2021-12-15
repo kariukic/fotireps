@@ -555,6 +555,7 @@ def interp_and_shift_sources(
     shift_sourcelist=False,
     write_db=False,
     exclude_missing_sources=None,
+    integration_time=None,
 ):
     """Interpolate offsets and output results.
 
@@ -608,7 +609,9 @@ def interp_and_shift_sources(
 
     tisis = get_sky_temp(obsid) + 50  # sky temp + 50k MWA receiver temp
     log.info("Obsid Tsys: %s", tisis)
-    two_sigma_thermal_noise_level = thermal_noise(Tsys=tisis) * 2
+    two_sigma_thermal_noise_level = (
+        thermal_noise(Tsys=tisis, integration_time=integration_time) * 2
+    )
 
     df1 = label_dataframe(
         df, flux_threshold=two_sigma_thermal_noise_level, boundaries=boundaries
@@ -827,6 +830,15 @@ if __name__ == "__main__":
     )
 
     group1.add_argument(
+        "--integration_time",
+        action="store",
+        default=8,
+        required=False,
+        type=int,
+        help="Integration time for computing thermal noise and sources SNR",
+    )
+
+    group1.add_argument(
         "--interp",
         "-i",
         action="store_true",
@@ -939,6 +951,7 @@ if __name__ == "__main__":
             shift_sourcelist=args.shift_sourcelist,
             write_db=args.write_db,
             exclude_missing_sources=args.exclude_missing_sources,
+            integration_time=args.integration_time,
         )
 
     else:
