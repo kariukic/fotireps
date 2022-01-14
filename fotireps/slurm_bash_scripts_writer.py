@@ -50,9 +50,10 @@ patchsrclist=$3
 shiftsjason=$4
 metafits=$5
 
-srclist shift -v --collapse-into-single-source "${srclist}" "${shiftsjason}" "${patchsrclist}" --metafits "${metafits}"
+# removed this command because I now use srcshift-by-beam on the shifted peel srclist to make the shifted patch srclist
+# srclist shift -v --collapse-into-single-source "${srclist}" "${shiftsjason}" "${patchsrclist}" --metafits "${metafits}"
 
-srclist shift -kv "${srclist}" "${shiftsjason}" "${peelsrclist}"
+hyperdrive srclist shift -v "${srclist}" "${shiftsjason}" "${peelsrclist}" --include-unshifted-sources
 
 echo "done"
                 """
