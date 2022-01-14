@@ -53,7 +53,7 @@ metafits=$5
 # removed this command because I now use srcshift-by-beam on the shifted peel srclist to make the shifted patch srclist
 # srclist shift -v --collapse-into-single-source "${srclist}" "${shiftsjason}" "${patchsrclist}" --metafits "${metafits}"
 
-hyperdrive srclist shift -v "${srclist}" "${shiftsjason}" "${peelsrclist}" --include-unshifted-sources
+hyperdrive srclist-shift -v "${srclist}" "${shiftsjason}" "${peelsrclist}" --include-unshifted-sources
 
 echo "done"
                 """
