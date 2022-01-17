@@ -363,6 +363,7 @@ def main():
 
             if args.patch:
                 scripts_writer.run_patch = True
+                DD_calibrators_numbers = None
             if args.peel:
                 DD_calibrators_numbers = args.peel
                 scripts_writer.run_peel = True
