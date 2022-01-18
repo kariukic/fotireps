@@ -326,6 +326,7 @@ class CookScripts:
 {jsub}="sbatch --nice=2 {job}.sh"
 {jid}=($(${{{jsub}}}))
 {jid}=${{{jid2}}} \n
+#SBATCH --time=00:10:00 \n
         """
             )
         # Write the other jobs in a loop with "dependency:afterok"
