@@ -782,7 +782,7 @@ if __name__ == "__main__":
     )
     group1.add_argument(
         "--method",
-        choices=["rbf", "others"],
+        choices=["rbf", "clough"],
         default="rbf",
         type=str,
         required=False,
