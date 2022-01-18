@@ -501,7 +501,7 @@ def main():
     scripts_writer.run_jobs(jobs)
 
     if args.fire:
-        os.system("sbatch run_jobs.sh")
+        os.system("sh run_jobs.sh")
 
     logging.info("All done. FOTIREPS scripts writer signing out, Kwaheri(-:")
 
