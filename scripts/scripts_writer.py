@@ -117,7 +117,7 @@ def main():
 
     group2.add_argument(
         "--no_cotter_flags",
-        dest="don't use mwaf files",
+        dest="no_cotter_flags",
         action="store_true",
         help="The provided sourcelist is ready and does not need srclist_by_beam to be run on it. [default: false]",
     )
