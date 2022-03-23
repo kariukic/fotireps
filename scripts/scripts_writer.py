@@ -116,6 +116,13 @@ def main():
     )
 
     group2.add_argument(
+        "--no_cotter_flags",
+        dest="don't use mwaf files",
+        action="store_true",
+        help="The provided sourcelist is ready and does not need srclist_by_beam to be run on it. [default: false]",
+    )
+
+    group2.add_argument(
         "--patch",
         default=0,  # 1000
         type=int,
@@ -412,6 +419,7 @@ def main():
                 subbands=args.subbands,
                 patch_time_config=args.patch_time_config,
                 no_srclist_by_beam=args.no_srclist_by_beam,
+                no_cotter_flags=args.no_cotter_flags,
             )
             # If needed, write the 'flagged_tiles.txt' file needed by the rts to flag
             if args.flag_tiles:
