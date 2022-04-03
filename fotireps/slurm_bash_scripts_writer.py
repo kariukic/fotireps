@@ -212,7 +212,7 @@ class CookScripts:
             script.writelines("module use /pawsey/mwa/software/python3/modulefiles\n")
             script.writelines("module load python-singularity\n")
             script.writelines(f"{self.virtual_env}\n")
-            script.writelines("module load RTS/sla_to_pal\n")
+            script.writelines("module load RTS/master\n")
             script.writelines("set -eux\n")
             script.writelines("command -v rts_gpu\n")
             script.writelines("export UCX_MEMTYPE_CACHE=n\n")
