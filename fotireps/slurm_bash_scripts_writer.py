@@ -168,6 +168,9 @@ class CookScripts:
                         f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits {extra_options} -o rts_patch.in \n"
                     )
 
+                # A hack for now since mongoose does not have this command
+                script.writelines('echo "DisableDipoleFlags=1" >> rts_patch.in \n')
+
             if self.run_peel:
                 # This part seems necessary for the moongoose to edit the peel infile to tell the rts correctly the integration time we want.
                 corrDumpsPerCadence = integration_time // CorrDumpTime
@@ -194,6 +197,9 @@ class CookScripts:
                 script.writelines(
                     f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)} {extra_options} -o rts_peel.in\n"
                 )  # TODO fix the * after srclist
+
+                # A hack for now since mongoose does not have this command
+                script.writelines('echo "DisableDipoleFlags=1" >> rts_peel.in \n')
         add_permissions(rts_setup_script)
 
     def rts_run(self):
