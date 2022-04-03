@@ -430,7 +430,7 @@ def main():
                 use_fee_beam=args.use_fee_beam,
             )
             # If needed, write the 'flagged_tiles.txt' file needed by the rts to flag
-            if args.flag_tiles:
+            if args.flag_tiles and args.flag_tiles != "None":
                 logging.info("Writing tiles %s to flagged_tiles.txt", args.flag_tiles)
                 write_tiles_to_flag_file(args.flag_tiles)
 
