@@ -119,6 +119,7 @@ class CookScripts:
         patch_time_config=None,
         no_srclist_by_beam=None,
         no_cotter_flags=None,
+        use_fee_beam=None,
     ):
         rts_setup_script = self.new_sh_script("rts_setup")
         with open(rts_setup_script, mode="a") as script:
@@ -128,6 +129,14 @@ class CookScripts:
             script.writelines("module load mongoose/v0.2.5\n")
             script.writelines(f"{self.virtual_env}\n")
             script.writelines("set -eux\n")
+
+            extras = ["--no-cotter-flags", "--use-fee-beam"]
+            extra_options = ""
+            for i, option in enumerate([no_cotter_flags, use_fee_beam]):
+                if option:
+                    extra_options += f" {extras[i]}"
+            if extra_options:
+                print(f"Using these extra options: {extra_options}")
 
             if self.run_patch:
 
@@ -152,15 +161,11 @@ class CookScripts:
                     )  # eg.  64/32s integration time = 2
 
                     script.writelines(
-                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits -o rts_patch.in \n"
-                    )
-                elif no_cotter_flags:
-                    script.writelines(
-                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits --no-cotter-flags -o rts_patch.in \n"
+                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits {extra_options} -o rts_patch.in \n"
                     )
                 else:
                     script.writelines(
-                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits -o rts_patch.in \n"
+                        f"rts-in-file-generator patch --base-dir {self.boxes_path} --metafits {self.metafits} --srclist *_patch{num_patch}.txt --subband-ids {' '.join(str(id) for id in subbands)} --write-vis-to-uvfits {extra_options} -o rts_patch.in \n"
                     )
 
             if self.run_peel:
@@ -181,14 +186,14 @@ class CookScripts:
                         f"srclist_by_beam.py -n {src_npeel} --srclist {self.sourcelist} --metafits {self.metafits} --no_patch --cutoff={cutoff}\n"
                     )
                 # --num-prepeel {num_prepeel} is not needed because the prepeel will always happen determined by the max in the other DD params (either num-peel or niono)
-                if no_cotter_flags:
-                    script.writelines(
-                        f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)}  --no-cotter-flags -o rts_peel.in\n"
-                    )  # TODO fix the * after srclist
-                else:
-                    script.writelines(
-                        f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)} -o rts_peel.in\n"
-                    )  # TODO fix the * after srclist
+                # if no_cotter_flags:
+                #     script.writelines(
+                #         f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)}  --no-cotter-flags -o rts_peel.in\n"
+                #     )  # TODO fix the * after srclist
+                # else:
+                script.writelines(
+                    f"rts-in-file-generator peel --num-primary-cals {num_full_dd_cals} --num-cals {num_iono} --num-peel {num_peel} --num-iterations {numberOfIterations} --corr-dumps-per-cadence {corrDumpsPerCadence} --base-dir {self.boxes_path} --metafits {self.metafits} --srclist srclist_*_peel*.txt --subband-ids {' '.join(str(id) for id in subbands)} {extra_options} -o rts_peel.in\n"
+                )  # TODO fix the * after srclist
         add_permissions(rts_setup_script)
 
     def rts_run(self):
