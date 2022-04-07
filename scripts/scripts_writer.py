@@ -162,6 +162,13 @@ def main():
         required=False,
         help="Radius for srclist cutoff",
     )
+    group2.add_argument(
+        "--max_flagged_tiles",
+        type=int,
+        default=32,
+        required=False,
+        help="Run only if flagged tiles are less than this number",
+    )
 
     group2.add_argument(
         "--corrdumptime",
@@ -190,7 +197,7 @@ def main():
         "--flag_tiles",
         nargs="+",
         required=False,
-        default=None,
+        default=0,
         help="IDs of tiles to flag",
     )
     group2.add_argument(
@@ -281,6 +288,14 @@ def main():
     logging_level = logging.INFO
     log.setLevel(logging_level)
     log.info("Karibu. This is FotIREPS %s-(%s)", __version__, __date__)
+
+    if args.flag_tiles and len(args.flag_tiles) > args.max_flagged_tiles:
+        logging.error(
+            "Attempting to flag more tiles; %s, than the maximum allowed; %s",
+            len(args.flag_tiles),
+            args.max_flagged_tiles,
+        )
+        sys.exit()
 
     output_directory = (
         args.output_directory if args.output_directory else os.path.abspath(".")
