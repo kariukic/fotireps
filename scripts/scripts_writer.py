@@ -289,7 +289,11 @@ def main():
     log.setLevel(logging_level)
     log.info("Karibu. This is FotIREPS %s-(%s)", __version__, __date__)
 
-    if args.flag_tiles and len(args.flag_tiles) > args.max_flagged_tiles:
+    if (
+        # converting the tiles_to_flag string to a list ofintergers
+        args.flag_tiles
+        and len(list(map(int, args.flag_tiles[0].split()))) > args.max_flagged_tiles
+    ):
         logging.error(
             "Attempting to flag more tiles; %s, than the maximum allowed; %s",
             len(args.flag_tiles),
