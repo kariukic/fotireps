@@ -289,7 +289,7 @@ def main():
     log.setLevel(logging_level)
     log.info("Karibu. This is FotIREPS %s-(%s)", __version__, __date__)
 
-    if args.flag_tiles:
+    if args.flag_tiles and args.flag_tiles != ["None"]:
         # converting the tiles_to_flag string to a list ofintergers
         tiles_to_be_flagged = list(map(int, args.flag_tiles[0].split()))
         if len(tiles_to_be_flagged) > args.max_flagged_tiles:
