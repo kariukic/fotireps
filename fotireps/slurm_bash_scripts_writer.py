@@ -70,6 +70,7 @@ class CookScripts:
         sourcelist="",
         metafits=None,
         boxes_path="",
+        rts_branch=None,
         virtual_env="",
         mail=None,
     ):
@@ -79,6 +80,7 @@ class CookScripts:
         self.sourcelist = sourcelist
         self.metafits = metafits
         self.boxes_path = boxes_path
+        self.rts_branch = rts_branch
         self.virtual_env = virtual_env
         self.mail = mail
 
@@ -212,7 +214,7 @@ class CookScripts:
             script.writelines("module use /pawsey/mwa/software/python3/modulefiles\n")
             script.writelines("module load python-singularity\n")
             script.writelines(f"{self.virtual_env}\n")
-            script.writelines("module load RTS/master\n")
+            script.writelines(f"module load RTS/{self.rts_branch}\n")
             script.writelines("set -eux\n")
             script.writelines("command -v rts_gpu\n")
             script.writelines("export UCX_MEMTYPE_CACHE=n\n")
@@ -343,7 +345,7 @@ class CookScripts:
             jobs_runner.write(
                 f"""\
 #! /bin/bash
-{jsub}="sbatch --nice=2 {job}.sh"
+{jsub}="sbatch --nice=50 {job}.sh"
 {jid}=($(${{{jsub}}}))
 {jid}=${{{jid2}}} \n
         """
@@ -359,7 +361,7 @@ class CookScripts:
                 jobs_runner.write(
                     f"""\
 
-{this_job_sub}="sbatch --nice=2 --dependency=afterok:${{{previous_job_id}}} {job}.sh"
+{this_job_sub}="sbatch --nice=50 --dependency=afterok:${{{previous_job_id}}} {job}.sh"
 {this_job_id}=($(${{{this_job_sub}}}))
 {this_job_id}=${{{this_job_id2}}}\n
                     """

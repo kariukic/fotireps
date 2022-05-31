@@ -100,6 +100,14 @@ def main():
         help="input data format",
     )
     group1.add_argument(
+        "--rts_branch",
+        choices=["master", "beam_tool"],
+        default="master",
+        type=str,
+        required=False,
+        help="input data format",
+    )
+    group1.add_argument(
         "--boxes_path",
         type=str,
         required=False,
@@ -336,6 +344,7 @@ def main():
         obsid=args.obsid,
         sourcelist=srclist,
         boxes_path=args.boxes_path,
+        rts_branch=args.rts_branch,
         virtual_env=VIRTUAL_ENV,
         mail=args.email,
     )

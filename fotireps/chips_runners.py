@@ -99,7 +99,7 @@ printenv
 cd /astro/mwaeor/MWA/chips/bin
 
 ./prepare_diff ${2}_${4} 384 0 'xx' ${2}_${4} ${3}
-./lssa_fg_thermal ${2}_${4} 384 80 'xx' 300. ${2}_${4} 0 ${3} 0 8.
+./lssa_fg_thermal ${2}_${4} 384 80 'xx' 300. ${2}_${4} 1 ${3} 0 8.
 
 Endofmessage
 

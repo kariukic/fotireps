@@ -81,7 +81,7 @@ module load python-singularity
 source /astro/mwaeor/kchege/virtenvs/karis/bin/activate
 set -eux
 
-sh make_obs_astro.sh {chips_input_file} {runtag} {frequency_band} multichips 0 1 {field}
+sh make_obs_astro.sh {chips_input_file} {runtag} {frequency_band} multichips 1 1 {field}
 sh run_all_astro.sh {chips_input_file} {runtag}_multichips 0 1
 
                     """
