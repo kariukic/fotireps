@@ -1,5 +1,4 @@
-### ***FOTIREPS - an RTS EoR Processing Suite, for Friends Of The Ionosphere.*** 
-        __meant to save us from near 40 repetitions of trying to run all the steps without breaking__
+### ***FOTIREPS - an RTS EoR Processing Suite.*** 
 
 Fotireps is a ***user-friendly*** conglomerate of different data processing tools used by the `MWA EoR group`. It was originally started as a tool for ionospheric analysis, hence the name.
 
